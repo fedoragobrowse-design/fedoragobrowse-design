@@ -141,8 +141,7 @@ labels.
   extension marketplace
 - [`harmonics-analysis`](https://github.com/fedoragobrowse-design/harmonics-analysis) — signal analysis,
   deployed to GitHub Pages
-- [`opensystemclass`](https://github.com/fedoragobrowse-design/opensystemclass) — the Learn by Make
-  curriculum source and class hub (private while in progress)
+- `opensystemclass` — the Learn by Make curriculum source and class hub (private while in progress)
 
 ## Stack
 
