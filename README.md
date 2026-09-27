@@ -47,35 +47,51 @@ Curriculum source is private while it's being finished.
 
 ---
 
-### AgentForge — sandbox compute for autonomous agents
+### AIec — AI elastic compute for autonomous agents
 
-A serverless Firecracker control plane where agents get real isolation instead
-of a `chroot` and a prayer. Independent open-source implementation, not
-affiliated with any commercial sandbox platform.
+Isolated, disposable computers for agents: each sandbox gets its own kernel,
+filesystem and network, and is destroyed the moment the work is done.
+Independent open-source implementation, not affiliated with any commercial
+sandbox platform.
 
-The design commitment is that **the development runtime is not a security
-boundary**. `bwrap-dev` and Docker modes are for local work and fail loudly as
-unsafe for untrusted code; production is `firecracker` and fails closed when
-KVM, a kernel, rootfs, or guest networking is missing.
+The design follows **DeepSeek Elastic Compute (DSec)** — *"A Sandbox
+Infrastructure for Effective Agentic Training at Scale"*, DeepSeek-AI &
+Tsinghua University, 2026 ([arXiv:2609.22978](https://arxiv.org/abs/2609.22978)).
+DSec's argument is that agent workloads arrive in bursts, need heterogeneous
+isolation, and keep state across long interactions — which calls for an elastic
+execution platform rather than one sandbox runtime. AIec implements the parts of
+that which survive contact with a small team: one runtime contract with several
+backends, capability-aware placement, and fenced, recoverable ownership.
 
-The genuinely verified path is the Firecracker integration test: boot a VM, wait
-for the guest agent, exec, write and read a guest file, snapshot memory and
-devices plus a disk copy, destroy the source VM, restore the snapshot in a new
-Firecracker process, and read the preserved file back. Restores across process
-death are the part most sandbox demos skip.
+The security commitment is that **the development runtime is not a security
+boundary**. Docker and the dev backend are for local work and fail loudly as
+unsafe for untrusted code; public workloads run on Firecracker microVMs and the
+control plane refuses to hand a tenant a weaker runtime.
+
+What is actually exercised, rather than asserted: a real Firecracker guest
+clones a repository over HTTPS, edits a tracked file, runs validation and
+returns a `git diff`; a worker is killed mid-flight and its sandbox is reassigned
+to another worker at a higher fencing generation, which reconstructs the
+workspace — and the old worker, when it returns, is rejected. Three consecutive
+recovery iterations, cross-tenant access attempts against known resource IDs,
+and a backup drilled by restoring the database and starting the control plane
+against the restored copy.
 
 ```
 agentforge-core      domain contracts + Platform composition
-agentforge-runtime   Firecracker lifecycle, bubblewrap dev backend
+agentforge-runtime   Firecracker, hosted provider and Docker backends
 agentforge-storage   PostgreSQL metadata/scheduling, S3 artifacts
 agentforge-api       Axum API, worker RPC, orchestration, metrics
 agentforge-client    Rust SDK + CLI
 ```
 
-The README publishes no invented benchmark numbers — if it isn't measured by
-`agentforge benchmark`, it isn't in the docs.
+The crate names keep the `agentforge-` prefix: they are code identifiers, not
+the product name. The product is **AIec**.
 
-→ [github.com/fedoragobrowse-design/AIec](https://github.com/fedoragobrowse-design/AIec)
+No invented benchmark numbers — if it isn't measured, it isn't in the docs.
+
+→ [github.com/fedoragobrowse-design/AIec](https://github.com/fedoragobrowse-design/AIec) ·
+[aiec.gobrowse.dev](https://aiec.gobrowse.dev)
 
 ---
 
