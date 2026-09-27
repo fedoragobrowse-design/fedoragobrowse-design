@@ -101,10 +101,9 @@ labels.
 ## Also in the workshop
 
 - [`agent-hub`](https://github.com/fedoragobrowse-design/agent-hub) — private agent hub with an
-  [extension marketplace](https://github.com/fedoragobrowse-design/agent-hub-marketplace)
+  extension marketplace
 - [`harmonics-analysis`](https://github.com/fedoragobrowse-design/harmonics-analysis) — signal analysis,
   deployed to GitHub Pages
-- [`connect4-ml`](https://github.com/fedoragobrowse-design/connect4-ml) — small ML experiments
 
 ## Stack
 
