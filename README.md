@@ -78,15 +78,31 @@ and a backup drilled by restoring the database and starting the control plane
 against the restored copy.
 
 ```
-agentforge-core      domain contracts + Platform composition
-agentforge-runtime   Firecracker, hosted provider and Docker backends
-agentforge-storage   PostgreSQL metadata/scheduling, S3 artifacts
-agentforge-api       Axum API, worker RPC, orchestration, metrics
-agentforge-client    Rust SDK + CLI
+aiec-core            domain contracts + Platform composition
+aiec-runtime         Firecracker, hosted provider and Docker backends
+aiec-storage         PostgreSQL metadata/scheduling, S3 artifacts
+aiec-api             Axum API, worker RPC, orchestration, metrics
+aiec-client          Rust SDK + CLI
+aiec-network-linux   TAP and nftables isolation
+aiec-mcp             local-only MCP server
 ```
 
-The crate names keep the `agentforge-` prefix: they are code identifiers, not
-the product name. The product is **AIec**.
+The Python module is still `agentforge`, so the documented import stays
+`from agentforge import AIec` — only the client class carries the product name.
+
+It also ships a **local MCP server**, so any MCP-capable agent can ask for a
+disposable machine on a cluster you run yourself. It is local-only by
+construction rather than by convention: a remote AIec base URL is refused at
+startup and cannot be enabled, the `hosted` and `e2b` runtimes are unavailable,
+and there is no code path from a tool call to a process on the host serving MCP.
+A full local worker reports `LOCAL_CAPACITY_UNAVAILABLE` rather than quietly
+sending the workload to a cloud provider.
+
+Exercised rather than asserted: an MCP client over Streamable HTTP created a
+Firecracker microVM, ran `uname` and `/etc/os-release` inside it, wrote and read
+a file, cloned a repository over HTTPS, edited a tracked file and returned the
+`git diff`, then destroyed it. OMP installs and runs in a sandbox, and a real
+model drove it to write a file into a cloned repository, touching nothing else.
 
 No invented benchmark numbers — if it isn't measured, it isn't in the docs.
 
