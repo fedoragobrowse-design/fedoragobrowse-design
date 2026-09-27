@@ -1,7 +1,9 @@
 # gobrowse2
 
-Systems and tooling work: sandbox infrastructure for AI agents, embedded
-firmware, and MCP servers that make hardware design tools scriptable.
+I build things that teach other people to build things — and the systems
+underneath them. A live after-school STEM program, an offline-first class hub,
+sandbox compute for AI agents, embedded firmware, and MCP servers that make
+hardware design tools scriptable.
 
 Currently [`@fedoragobrowse-design`](https://github.com/fedoragobrowse-design)
 — an alt account of [@gobrowse](https://github.com/gobrowse).
@@ -9,6 +11,41 @@ Currently [`@fedoragobrowse-design`](https://github.com/fedoragobrowse-design)
 ---
 
 ## What I'm working on
+
+### Learn by Make — a Python + electronics program for ages 8–14
+
+**[learnbymake.com](https://learnbymake.com)** · ~16 in-person classes at
+Brookwood Library, Hillsboro, Oregon · starting October 2026
+
+Students aged 8–14 write real Python and wire real circuits, then advance to
+MicroPython on Raspberry Pi Pico 2 hardware. No block coding, no drag-and-drop,
+no pre-soldered shields — real syntax and real components from the first class.
+
+I wrote the 16-class curriculum and the tooling that runs it. Each class pairs
+one Python topic with one physical build, so the code and the circuit are always
+talking about the same thing: students wire a resistor by hand, then write the
+Ohm's Law calculator that models it. Python and electronics are taught as one
+discipline rather than two parallel tracks — the breadboard-column mental model
+from Class 1 becomes GPIO pin grouping in Class 12.
+
+The tooling side is the part I'm proudest of:
+
+- **Deterministic SVG diagrams, not AI raster art** — every circuit diagram is
+  generated from source, so labels are exact and output is diffable in git. A
+  resistor that reads `220Ω` in one class and `22OΩ` in another is a bug.
+- **An offline-first class hub** — Pyodide is bundled locally, so a classroom
+  with bad wifi still gets working Python execution. The whole site runs from
+  `file://`.
+- **A lab checker that actually runs the code** — it executes student
+  submissions in Pyodide and grades them four ways: static source patterns,
+  scripted stdin cases, function probes, and files the lab should write. Not a
+  regex match against a textarea.
+
+Curriculum source is private while it's being finished.
+
+→ [learnbymake.com](https://learnbymake.com) · [program & curriculum](https://learnbymake.com/program)
+
+---
 
 ### AgentForge — sandbox compute for autonomous agents
 
@@ -104,13 +141,19 @@ labels.
   extension marketplace
 - [`harmonics-analysis`](https://github.com/fedoragobrowse-design/harmonics-analysis) — signal analysis,
   deployed to GitHub Pages
+- [`opensystemclass`](https://github.com/fedoragobrowse-design/opensystemclass) — the Learn by Make
+  curriculum source and class hub (private while in progress)
 
 ## Stack
 
-Rust · Embassy · Python · TypeScript · Axum · PostgreSQL · Firecracker ·
-RP2040/RP2350 · SX1276 · X25519 / ChaCha20-Poly1305 · MCP
+**Teaching** — Python · Pyodide · deterministic SVG · Astro · offline-first
+
+**Systems** — Rust · Embassy · Axum · PostgreSQL · Firecracker · RP2040/RP2350 ·
+SX1276 · X25519 / ChaCha20-Poly1305 · MCP
 
 ## Contact
 
-Open to issues and PRs on any of the above. This is an alt account — the main
-one is [@gobrowse](https://github.com/gobrowse).
+Enquiries about the program: [learnbymake.com/contact](https://learnbymake.com/contact).
+
+Open to issues and PRs on any of the repos above. This is an alt account — the
+main one is [@gobrowse](https://github.com/gobrowse).
